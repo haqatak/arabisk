@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lær Koranen - Lær Arabisk</title>
+    <link rel="stylesheet" href="new_styles.css">
+    <style>
+        .verse {
+            margin-bottom: 20px;
+        }
+
+        .arabic {
+            font-size: 24px;
+            direction: rtl;
+            margin-bottom: 10px;
+        }
+
+        .transliteration {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+	    font-family: serif;
+        }
+
+        .translation {
+            font-size: 14px;
+            color: #555;
+        }
+
+        #surah-checkboxes {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #surah-checkboxes label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lær Koranen</h1>
+    </header>
+    <nav>
+        <a href="index.html">Hjem</a>
+        <a href="letters.html">Lær Bokstaver</a>
+        <a href="words.html">Lær Ord</a>
+        <a href="challenge.html">Ta en Utfordring</a>
+        <a href="quran.html">Koranen</a>
+        <a href="feedback.html">Gi Tilbakemelding</a>
+    </nav>
+    <main>
+        <h2>Velg en surah og trykk på play</h2>
+
+        <div id="player">
+            <h3>Velg suraher</h3>
+            <div id="surah-checkboxes">
+                <!-- Checkboxes will be generated here -->
+            </div>
+
+            <br>
+
+            <label for="playbackRate">Velg hastighet på avspilling: </label>
+            <select id="playbackRate">
+                <option value="0.5">Veldig sakte 0.5x</option>
+                <option value="0.75">Sakte 0.75x</option>
+                <option value="1" selected>Normal</option>
+                <option value="1.25">Rask 1.25x</option>
+                <option value="1.5">Veldig rask 1.5x</option>
+            </select>
+
+            <br>
+
+            <label for="repeat">Repetisjon: </label>
+            <select id="repeat">
+                <option value="none">Ingen repetisjon</option>
+                <option value="one" selected>Repeter surah</option>
+                <option value="all">Repeter alle surah</option>
+            </select>
+
+            <br>
+
+            <button onclick="playSelectedSurahs()">Spill av valgte</button>
+
+            <audio id="audioPlayer" controls></audio>
+
+            <div id="transliterationContainer"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    </footer>
+    <script>
+const audioPlayer = document.getElementById("audioPlayer");
+const playbackRateSelect = document.getElementById("playbackRate");
+const repeatSelect = document.getElementById("repeat");
+const transliterationContainer = document.getElementById("transliterationContainer");
+const surahCheckboxesContainer = document.getElementById("surah-checkboxes");
+
+let surahs = {};
+let surahDetails = {};
+
+async function fetchQuranData() {
+    try {
+        const [arabicRes, transliterationRes, translationRes] = await Promise.all([
+            fetch('http://api.alquran.cloud/v1/quran/quran-uthmani'),
+            fetch('http://api.alquran.cloud/v1/quran/en.transliteration'),
+            fetch('http://api.alquran.cloud/v1/quran/no.berg')
+        ]);
+
+        const arabicData = await arabicRes.json();
+        const transliterationData = await transliterationRes.json();
+        const translationData = await translationRes.json();
+
+        // Process the data
+        arabicData.data.surahs.forEach(surah => {
+            surahs[surah.number] = { name: surah.englishName };
+            surahDetails[surah.number] = {
+                name: surah.englishName,
+                arabic: surah.name,
+                verses: surah.ayahs.map((ayah, index) => ({
+                    arabic: ayah.text,
+                    transliteration: '',
+                    translation: ''
+                }))
+            };
+        });
+
+        transliterationData.data.surahs.forEach(surah => {
+            surah.ayahs.forEach((ayah, index) => {
+                surahDetails[surah.number].verses[index].transliteration = ayah.text;
+            });
+        });
+
+        translationData.data.surahs.forEach(surah => {
+            surah.ayahs.forEach((ayah, index) => {
+                surahDetails[surah.number].verses[index].translation = ayah.text;
+            });
+        });
+
+        populateCheckboxes();
+        displaySurah(1); // Display the first surah by default
+
+    } catch (error) {
+        console.error("Error fetching Quran data:", error);
+        transliterationContainer.innerHTML = "Kunne ikke laste Koranen data. Vennligst prøv igjen senere.";
+    }
+}
+
+
+// Populate checkboxes
+function populateCheckboxes() {
+    for (const surahNumber in surahs) {
+        const surah = surahs[surahNumber];
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `surah-${surahNumber}`;
+        checkbox.value = surahNumber;
+
+        const label = document.createElement('label');
+        label.htmlFor = `surah-${surahNumber}`;
+        label.appendChild(document.createTextNode(`${surahNumber} - ${surah.name}`));
+
+        surahCheckboxesContainer.appendChild(checkbox);
+        surahCheckboxesContainer.appendChild(label);
+        surahCheckboxesContainer.appendChild(document.createElement('br'));
+    }
+}
+
+let currentlyPlaying = [];
+let currentIndex = 0;
+
+function playSelectedSurahs() {
+    const selectedCheckboxes = document.querySelectorAll('#surah-checkboxes input[type="checkbox"]:checked');
+    currentlyPlaying = Array.from(selectedCheckboxes).map(cb => cb.value);
+    currentIndex = 0;
+
+    if (currentlyPlaying.length > 0) {
+        playNextSurah();
+    } else {
+        alert("Vennligst velg minst én surah.");
+    }
+}
+
+function playNextSurah() {
+    if (currentIndex >= currentlyPlaying.length) {
+        if (repeatSelect.value === 'all') {
+            currentIndex = 0;
+        } else {
+            return; // Stop playback
+        }
+    }
+
+    const surahNumber = currentlyPlaying[currentIndex];
+    const paddedSurahNumber = surahNumber.toString().padStart(3, '0');
+    audioPlayer.src = `./${paddedSurahNumber}.mp3`;
+    audioPlayer.playbackRate = parseFloat(playbackRateSelect.value);
+    audioPlayer.loop = (repeatSelect.value === 'one');
+
+    displaySurah(surahNumber);
+
+    audioPlayer.onended = () => {
+        if (!audioPlayer.loop) {
+            currentIndex++;
+            playNextSurah();
+        }
+    };
+
+    audioPlayer.play();
+}
+
+function displaySurah(surahNumber) {
+    const surah = surahDetails[surahNumber];
+    if (!surah) {
+        transliterationContainer.innerHTML = "Surah information not available.";
+        return;
+    }
+
+    let html = `<h2>${surah.name} (${surahNumber})</h2>`;
+    html += `<div class="arabic">${surah.arabic}</div>`;
+
+    surah.verses.forEach((verse, index) => {
+        html += `<div class="verse">`;
+        html += `<div class="arabic">${verse.arabic}</div>`;
+        html += `<div class="transliteration">${verse.transliteration}</div>`;
+        html += `<div class="translation">${verse.translation}</div>`;
+        html += `</div>`;
+    });
+
+    transliterationContainer.innerHTML = html;
+
+    // Scroll the text into view
+    setTimeout(() => {
+        transliterationContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+}
+
+// Fetch Quran data when the page loads
+fetchQuranData();
+</script>
+</body>
+</html>
