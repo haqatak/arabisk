@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Vowels Flashcards</title>
+    <link rel="stylesheet" href="harakat.css">
+</head>
+<body>
+    <div class="header">
+        <a href="./index.html" class="bckbutton">tilbake til hovedsiden...</a>
+    </div>
+    <h1>Learn Arabic Vowels</h1>
+    <div class="controls">
+        <div id="vowel-type-buttons">
+            <button class="vowel-type-btn active" data-type="all">All Vowels</button>
+            <button class="vowel-type-btn" data-type="fatḥah">Fatḥah</button>
+            <button class="vowel-type-btn" data-type="kasrah">Kasrah</button>
+            <button class="vowel-type-btn" data-type="ḍammah">Ḍammah</button>
+            <button class="vowel-type-btn" data-type="sukūn">Sukūn</button>
+            <button class="vowel-type-btn" data-type="tanwin-fatḥah">Tanwin Fatḥah</button>
+            <button class="vowel-type-btn" data-type="tanwin-kasrah">Tanwin Kasrah</button>
+            <button class="vowel-type-btn" data-type="tanwin-ḍammah">Tanwin Ḍammah</button>
+        </div>
+    </div>
+    <div id="flashcards-container">
+        <div class="flashcard">
+            <div class="card-content">
+                <p class="arabic-vowel"></p>
+            </div>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <p class="arabic-vowel"></p>
+            </div>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <p class="arabic-vowel"></p>
+            </div>
+        </div>
+    </div>
+    <button id="next-button-vowel">Next Vowel</button>
+    <button id="pronunciation-button">Pronounce</button>
+    <div id="score-container">Score: <span id="corrects">0</span></div>
+    <div id="high-score-container">High Score: <span id="high-score">0</span></div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modal-text"></p>
+        </div>
+    </div>
+    <script src="vowels.js"></script>
+</body>
+</html>

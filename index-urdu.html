@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>Lær å lese urdu med oss</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            padding: 20px;
+            color: #333;
+            direction: rtl;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .flashcard {
+            border: 2px solid #333;
+            padding: 20px;
+            margin: 10px;
+            font-size: 52px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
+
+        .flashcard:hover {
+            background-color: #FAFAFA;
+        }
+
+        #letters, #words {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+          }
+    </style>
+</head>
+<body>
+    <h1>Lær å lese urdu med oss</h1>
+  
+    <h2>Bokstaver</h2>
+    <div id="letters">
+        <!-- Bokstaver vil bli generert her -->
+    </div>
+    <hr>
+    <h2>Enkle ord</h2>
+    <div id="words">
+        <!-- Ord vil bli generert her -->
+    </div>
+    <hr>
+    <h2>Utfordringer</h2>
+        <a class="button" href="urdu.html">Test dine kunnskaper her</a>
+     <h2>Koran</h2>
+        <a class="button" href="quran.html">Øve på Koran</a>
+        
+        <script>
+
+    
+            function speakText(text) {
+                    new Audio('./urdu/'+text+'.mp3').play();
+            }
+
+
+            const letters =   [  "ا", "ب", "پ", "ت", "ٹ", "ث", "ج", "چ", "ح", "خ", 
+            "د", "ڈ", "ذ", "ر", "ڑ", "ز", "ژ", "س", "ش", "ص", 
+            "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ک", "گ", "ل", 
+            "م", "ن", "ں", "و", "ہ", "ھ", "ء", "ی", "ے"
+        ];
+            words = ['آسمان',
+            'آنکھ',
+            'آپ کا کیا حال ہے',
+            'اسکول',
+            'ایک',
+            'بادل',
+            'بارش',
+            'بال',
+            'بلی',
+            'بچہ',
+            'تم',
+            'تم لوگ',
+            'تین',
+            'جنگل',
+            'خوش آمدید',
+            'درخت',
+            'دروازہ',
+            'دریا',
+            'دفتر',
+            'دل',
+            'دن',
+            'دو',
+            'رات',
+            'راستہ',
+            'ریستوران',
+            'ستارہ',
+            'سر',
+            'سلام',
+            'سمندر',
+            'سورج',
+            'سٹیشن',
+            'سڑک',
+            'شام',
+            'شکریہ',
+            'شہر',
+            'صبح',
+            'صحراء',
+            'مسجد',
+            'منہ',
+            'مچھلی',
+            'میدان',
+            'وہ',
+            'وہ لوگ',
+            'پانچ',
+            'پاؤں',
+            'پرندہ',
+            'پھول',
+            'پہاڑ',
+            'چار',
+            'چاند',
+            'چہرہ',
+            'کان',
+            'کتا',
+            'کتاب',
+            'کھانا',
+            'کیسے',
+            'گاڑی',
+            'گھر',
+            'ہاتھ',
+            'ہسپتال',
+            'ہم',
+            'ہوا',
+            'ہوٹل'];
+    const lettersContainer = document.getElementById('letters');
+    letters.forEach(letter => {
+        const letterCard = document.createElement('div');
+        letterCard.className = 'flashcard';
+        letterCard.style.backgroundColor = getRandomLightColor();
+        letterCard.innerText = letter;
+        letterCard.onclick = () => { 
+            //const phonetic = phoneticLetters[letter];
+            const phonetic = letter;
+            speakText(phonetic);
+        };
+        lettersContainer.appendChild(letterCard);
+    });
+
+    const wordsContainer = document.getElementById('words');
+    words.forEach(word => {
+        const wordCard = document.createElement('div');
+        wordCard.className = 'flashcard';
+        wordCard.style.backgroundColor = getRandomLightColor();
+        wordCard.innerText = word;
+        wordCard.onclick = () => { 
+            speakText(word);
+        };
+        wordsContainer.appendChild(wordCard);
+    });
+
+
+    function getRandomLightColor() {
+        const letters = '98DAC';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 5)];
+        }
+        return color;
+    }
+</script>
+</body>
+</html>

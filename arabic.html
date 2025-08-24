@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8">
+  <title>تعلم القراءة معنا!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F5F5F5;
+      padding: 20px;
+      color: #333;
+      direction: rtl;
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none; /* IE 10 and IE 11 */
+      user-select: none; /* Standard syntax */
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .buttonz {
+      border: 2px solid #333;
+      padding: 10px; 
+      margin: 5px;
+      font-size: 40px;
+      text-align: center;
+      cursor: pointer;
+      background-color: #FFFFFF;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none; /* IE 10 and IE 11 */
+      user-select: none; /* Standard syntax */
+    }
+    .flashcard2 {
+      float: right;
+      border: 2px solid #333;
+      padding: 0px 25px 0px 25px;
+      margin: 15px;
+      font-size: 3rem;
+      text-align: center;
+      cursor: pointer;
+      background-color: #FFFFFF;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none; /* IE 10 and IE 11 */
+      user-select: none; /* Standard syntax */
+    }
+    .flashcard {
+      border: 2px solid #333;
+      padding: 10px;
+      margin: 5px 25px;
+      font-size: 3rem;
+      text-align: center;
+      cursor: pointer;
+      background-color: #FFFFFF;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none; /* IE 10 and IE 11 */
+      user-select: none; /* Standard syntax */
+    }
+    .flashcard:hover {
+      background-color: #FAFAFA;
+    }
+    #letters, #words {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <a href="./index.html" class="button">tilbake til opplesing...</a>
+  <button class="buttonz" id="newWordChallenge">تحدي كلمة </button>
+  <button class="buttonz" id="newLetterChallenge">تحدي حرف </button>
+ 
+  
+  <div id="challengeContainer"></div>
+  <div id="wordsContainer"></div>
+  <script>
+
+    let words = [
+    "أُذُن" , "أَنْتَ", "هُوَ", "هِيَ", "نَحْنُ", "أَنْتُم", "هُم", "هُنَّ", 
+    "وَاحِد", "اثْنَان", "ثَلاثَة", "أَرْبَعَة", "خَمْسَة", 
+    "يَوْم", "لَيْلَة", "صَبَاح", "مَسَاء", "شَمْس", "قَمَر", 
+    "مَرْحَبًا", "كَيْف", "حَالِكَ", "شُكْرًا", "سَلام",
+    "كِتَاب", "سَيَّارَة", "طَعام", "بَاب", "طِفْل", "قِطّ", "كَلْب", "طَائِر", "سَمَكَة", 
+    "شَجَرَة", "زَهْرَة", "مَطَر", "شَمْس", "قَمَر", "نَهار", "لَيْل", "بَيْت", "طَرِيق", "شَارِع", "مَدينَة",
+    "جَبَل", "نَهْر", "بَحْر", "سَمَاء", "نَجْم", "غَيْمَة", "رَياح", "صَحْرَاء", "غَابَة", 
+    "عَيْن", "أُذُن", "فَم", "يَد", "رِجْل", "قَلْب", "رَأْس", "شَعْر", "وَجْه", 
+    "مَدْرَسَة", "مَكْتَب", "مَطْعَم", "فِنْدَق", "مَسْجِد", "مَحَطَّة", "مَلْعَب", "مَستَشْفَى"
+];
+    let selectedWords = [];
+    function speakText(text) {
+      let encodedText = encodeURIComponent(text).replaceAll("%D9%80","");
+      console.log(encodedText);
+      new Audio('./'+encodedText+'.mp3').play();
+  }
+
+
+  const letters =['ا', 'ـا', 'ب', 'ـب', 'ـبـ', 'بـ', 'ت', 'ـت', 'ـتـ', 'تـ', 'ث', 'ـث', 'ـثـ', 'ثـ', 'ج', 'ـج', 'ـجـ', 'جـ', 'ح', 'ـح', 'ـحـ', 'حـ', 'خ', 'ـخ', 'ـخـ', 'خـ', 'د', 'ـد', 'ذ', 'ـذ', 'ر', 'ـر',  'ز', 'ـز', 'س', 'ـس', 'ـسـ', 'سـ', 'ش', 'ـش', 'ـشـ', 'شـ', 'ص', 'ـص', 'ـصـ', 'صـ', 'ض', 'ـض', 'ـضـ', 'ضـ', 'ط', 'ـط', 'ـطـ', 'طـ', 'ظ', 'ـظ', 'ـظـ', 'ظـ', 'ع', 'ـع', 'ـعـ', 'عـ', 'غ', 'ـغ', 'ـغـ', 'غـ', 'ف', 'ـف', 'ـفـ', 'فـ', 'ق', 'ـق', 'ـقـ', 'قـ', 'ك', 'ـك', 'ـكـ', 'كـ', 'ل', 'ـل', 'ـلـ', 'لـ', 'م', 'ـم', 'ـمـ', 'مـ', 'ن', 'ـن', 'ـنـ', 'نـ', 'ه', 'ـه', 'ـهـ', 'هـ', 'و', 'ـو', 'ي', 'ـي', 'ـيـ', 'يـ'];
+
+    const challengeContainer = document.getElementById("challengeContainer");
+    const wordsContainer = document.getElementById("wordsContainer");
+    let challengeType;
+    let answer;
+    function getRandomLightColor() {
+        const h = Math.floor(Math.random() * 360);
+        const s = Math.floor(Math.random() * (100 - 60) + 60) + '%';
+        const l = '70%';
+        return `hsl(${h},${s},${l})`;
+    }
+
+    function newChallenge() {
+        const challenge = document.createElement('div');
+        challenge.className = 'flashcard';
+        challenge.style.backgroundColor = getRandomLightColor();
+        if (challengeType === 'word') {
+            answer = selectedWords[Math.floor(Math.random() * selectedWords.length)];
+            challenge.innerText = 'Klikk på ordet';
+        } else {
+            answer = letters[Math.floor(Math.random() * letters.length)];
+            challenge.innerText = 'Klikk på bokstaven';
+        }
+        challengeContainer.innerHTML = '';
+        challengeContainer.appendChild(challenge);
+        speakText(answer);
+        
+    }
+
+    function newWordChallenge() {
+        wordsContainer.innerHTML = '';
+        selectedWords = [];
+        if (words.length < 10) {
+          words = [
+          "أَنَا", "أَنْتَ", "هُوَ", "هِيَ", "نَحْنُ", "أَنْتُم", "هُم", "هُنَّ",           "وَاحِد", "اثْنَان", "ثَلاثَة", "أَرْبَعَة", "خَمْسَة",           "يَوْم", "لَيْلَة", "صَبَاح", "مَسَاء", "شَمْس", "قَمَر",                   "مَرْحَبًا", "كَيْف", "حَالِكَ", "شُكْرًا", "سَلام",          "كِتَاب", "سَيَّارَة", "طَعام", "بَاب", "طِفْل", "قِطّ", "كَلْب", "طَائِر", "سَمَكَة",           "شَجَرَة", "زَهْرَة", "مَطَر", "شَمْس", "قَمَر", "نَهار", "لَيْل", "بَيْت", "طَرِيق", "شَارِع", "مَدينَة",          "جَبَل", "نَهْر", "بَحْر", "سَمَاء", "نَجْم", "غَيْمَة", "رَياح", "صَحْرَاء", "غَابَة",           "عَيْن", "أُذُن", "فَم", "يَد", "رِجْل", "قَلْب", "رَأْس", "شَعْر", "وَجْه",           "مَدْرَسَة", "مَكْتَب", "مَطْعَم", "فِنْدَق", "مَسْجِد", "مَحَطَّة", "مَلْعَب", "مَستَشْفَى"      ];
+      
+        }
+
+
+        for (let i = 0; i < 10; i++) {
+            const index = Math.floor(Math.random() * words.length);
+            selectedWords.push(words[index]);
+            words.splice(index, 1);
+        }
+
+        selectedWords.forEach(word => {
+            const wordCard = document.createElement('div');
+            wordCard.className = 'flashcard';
+            wordCard.style.backgroundColor = getRandomLightColor();
+            wordCard.innerText = word;
+            wordCard.onclick = () => {
+                if (challengeType === 'word') checkAnswer(word);
+            };
+            wordsContainer.appendChild(wordCard);
+        });
+
+        newChallenge();
+    }
+
+    function newLetterChallenge() {
+        wordsContainer.innerHTML = '';
+        letters.forEach(letter => {
+            const letterCard = document.createElement('div');
+            letterCard.className = 'flashcard2';
+            letterCard.style.backgroundColor = getRandomLightColor();
+            letterCard.innerText = letter;
+            letterCard.onclick = () => {
+                if (challengeType === 'letter') checkAnswer(letter.replaceAll("%D9%80",""));
+            };
+            wordsContainer.appendChild(letterCard);
+        });
+
+        newChallenge();
+    }
+
+    function checkAnswer(attempt) {
+        if (attempt.replaceAll("ـ","") == answer.replaceAll("ـ","")) {
+          new Audio('./right.mp3').play().finally(function() {
+            if (challengeType === 'word') {
+                newWordChallenge();
+            } else {
+                newLetterChallenge();
+            }
+        })} else {
+          new Audio('./error.m4a').play().finally(function() {
+            speakText(answer);
+        });
+        }
+    }
+
+    document.getElementById('newWordChallenge').onclick = () => {
+        challengeType = 'word';
+        newWordChallenge();
+    };
+
+    document.getElementById('newLetterChallenge').onclick = () => {
+        challengeType = 'letter';
+        newLetterChallenge();
+    };
+</script>
+</body>
+</html>

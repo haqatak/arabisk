@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Flashcards</title>
+    <link rel="stylesheet" href="flash.css">
+</head>
+<body>
+    <div class="header">
+        <a href="./index.html" class="bckbutton">tilbake til opplesing...</a>
+    </div>
+    <div class="controls">
+        <div id="letter-count-buttons">
+            <button class="letter-count-btn" data-count="1">1 </button>
+            <button class="letter-count-btn" data-count="2">2 </button>
+            <button class="letter-count-btn" data-count="3">3 </button>
+            <button class="letter-count-btn" data-count="4">4 </button>
+        </div>
+    </div>
+    <div id="flashcards-container">
+        <div class="flashcard">
+            <div class="card-content">
+                <p class="arabic-letter"></p>
+            </div>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <p class="arabic-letter"></p>
+            </div>
+        </div>
+        <div class="flashcard">
+            <div class="card-content">
+                <p class="arabic-letter"></p>
+            </div>
+        </div>
+    </div>
+    <button id="next-button-letter">Neste bokstav</button>
+    <button id="pronunciation-button">Uttale</button>
+    <div id="score-container">Score: <span id="corrects">0</span></div>
+    <div id="high-score-container">High Score: <span id="high-score">0</span></div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modal-text"></p>
+        </div>
+    </div>
+    <script src="flash.js"></script>
+</body>
+</html>
