@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lær Koranen - Lær Arabisk</title>
+    <title>Lær Koranen - Lær Arabisk og Koran</title>
     <link rel="stylesheet" href="new_styles.css">
     <style>
         .verse {
@@ -15,6 +15,9 @@
             direction: rtl;
             margin-bottom: 10px;
         }
+.arabic-text {
+    direction: rtl;
+}
 
         .transliteration {
             font-size: 20px;
@@ -58,9 +61,17 @@
         <h2>Velg en surah og trykk på play</h2>
 
         <div id="player">
-            <h3>Velg suraher</h3>
-            <div id="surah-checkboxes">
-                <!-- Checkboxes will be generated here -->
+            <button id="open-modal-btn">Velg Suraer</button>
+
+            <div id="sura-selection-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h3>Velg suraher</h3>
+                    <div id="surah-checkboxes">
+                        <!-- Checkboxes will be generated here -->
+                    </div>
+                    <button id="save-selection-btn">Lagre Valg</button>
+                </div>
             </div>
 
             <br>
@@ -93,7 +104,7 @@
         </div>
     </main>
     <footer>
-        <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Lær Arabisk og Koran</a> | Drevet av Prosjekt.pro</p>
     </footer>
     <script>
 const audioPlayer = document.getElementById("audioPlayer");
@@ -101,6 +112,19 @@ const playbackRateSelect = document.getElementById("playbackRate");
 const repeatSelect = document.getElementById("repeat");
 const transliterationContainer = document.getElementById("transliterationContainer");
 const surahCheckboxesContainer = document.getElementById("surah-checkboxes");
+const modal = document.getElementById("sura-selection-modal");
+const openModalBtn = document.getElementById("open-modal-btn");
+const closeModalBtn = document.querySelector(".close-button");
+const saveSelectionBtn = document.getElementById("save-selection-btn");
+
+openModalBtn.onclick = () => modal.style.display = "block";
+closeModalBtn.onclick = () => modal.style.display = "none";
+saveSelectionBtn.onclick = () => modal.style.display = "none";
+window.onclick = (event) => {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 let surahs = {};
 let surahDetails = {};
