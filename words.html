@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lær Arabiske Ord</title>
+    <link rel="stylesheet" href="new_styles.css">
+</head>
+<body>
+    <header>
+        <h1>Lær Arabiske Ord</h1>
+    </header>
+    <nav>
+        <a href="index.html">Hjem</a>
+        <a href="letters.html">Lær Bokstaver</a>
+        <a href="words.html">Lær Ord</a>
+        <a href="challenge.html">Ta en Utfordring</a>
+        <a href="feedback.html">Gi Tilbakemelding</a>
+    </nav>
+    <main>
+        <h2>Klikk på et ord for å høre uttalen</h2>
+        <div class="flashcard-container" id="words-container">
+            <!-- Words will be generated here by JavaScript -->
+        </div>
+    </main>
+    <footer>
+    <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    </footer>
+    <script>
+        function speakText(text) {
+            let encodedText = encodeURIComponent(text).replaceAll("%D9%80","");
+            new Audio('./'+encodedText+'.mp3').play();
+        }
+
+        const words = [
+            "أَنَا", "أَنْتَ", "هُوَ", "هِيَ", "نَحْنُ", "أَنْتُم", "هُم", "هُنَّ",
+            "وَاحِد", "اثْنَان", "ثَلاثَة", "أَرْبَعَة", "خَمْسَة",
+            "يَوْم", "لَيْلَة", "صَبَاح", "مَسَاء", "شَمْس", "قَمَر",
+            "مَرْحَبًا", "كَيْف", "حَالِكَ", "شُكْرًا", "سَلام",
+            "كِتَاب", "سَيَّارَة", "طَعام", "بَاب", "طِفْل", "قِطّ", "كَلْب", "طَائِر", "سَمَكَة",
+            "شَجَرَة", "زَهْرَة", "مَطَر", "شَمْس", "قَمَر", "نَهار", "لَيْل", "بَيْت", "طَرِيق", "شَارِع", "مَدينَة",
+            "جَبَل", "نَهْر", "بَحْر", "سَمَاء", "نَجْم", "غَيْمَة", "رَياح", "صَحْرَاء", "غَابَة",
+            "عَيْن", "أُذُن", "فَم", "يَد", "رِجْل", "قَلْب", "رَأْس", "شَعْر", "وَجْه",
+            "مَدْرَسَة", "مَكْتَب", "مَطْعَم", "فِنْدَق", "مَسْجِد", "مَحَطَّة", "مَلْعَب", "مَستَشْفَى"
+        ];
+
+        const wordsContainer = document.getElementById('words-container');
+        words.forEach(word => {
+            const wordCard = document.createElement('div');
+            wordCard.className = 'flashcard';
+            wordCard.innerText = word;
+            wordCard.onclick = () => {
+                speakText(word);
+            };
+            wordsContainer.appendChild(wordCard);
+        });
+    </script>
+</body>
+</html>
