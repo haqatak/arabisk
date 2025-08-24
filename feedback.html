@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gi Tilbakemelding - Lær Arabisk</title>
+    <link rel="stylesheet" href="new_styles.css">
+</head>
+<body>
+    <header>
+        <h1>Gi oss din Tilbakemelding</h1>
+    </header>
+    <nav>
+        <a href="index.html">Hjem</a>
+        <a href="letters.html">Lær Bokstaver</a>
+        <a href="words.html">Lær Ord</a>
+        <a href="challenge.html">Ta en Utfordring</a>
+        <a href="feedback.html">Gi Tilbakemelding</a>
+    </nav>
+    <main>
+        <h2>Vi setter pris på dine tanker!</h2>
+        <p>Har du forslag til forbedringer, funnet en feil, eller vil du bare si hei? Bruk skjemaet under for å sende oss en melding. Alle tilbakemeldinger hjelper oss med å gjøre denne siden bedre.</p>
+
+        <form class="feedback-form" action="mailto:arabisk@prosjekt.pro" method="post" enctype="text/plain">
+            <label for="name">Navn:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">E-post (valgfritt):</label>
+            <input type="email" id="email" name="email">
+
+            <label for="message">Melding:</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">Send Tilbakemelding</button>
+        </form>
+    </main>
+    <footer>
+    <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    </footer>
+</body>
+</html>

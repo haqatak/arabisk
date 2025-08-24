@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lær Arabiske Bokstaver</title>
+    <link rel="stylesheet" href="new_styles.css">
+</head>
+<body>
+    <header>
+        <h1>Lær Arabiske Bokstaver</h1>
+    </header>
+    <nav>
+        <a href="index.html">Hjem</a>
+        <a href="letters.html">Lær Bokstaver</a>
+        <a href="words.html">Lær Ord</a>
+        <a href="challenge.html">Ta en Utfordring</a>
+        <a href="feedback.html">Gi Tilbakemelding</a>
+    </nav>
+    <main>
+        <h2>Klikk på en bokstav for å høre lyden</h2>
+        <div class="flashcard-container" id="letters-container">
+            <!-- Letters will be generated here by JavaScript -->
+        </div>
+    </main>
+    <footer>
+    <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    </footer>
+    <script>
+        function speakText(text) {
+            let encodedText = encodeURIComponent(text).replaceAll("%D9%80","");
+            new Audio('./'+encodedText+'.mp3').play();
+        }
+
+        const letters = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'];
+
+        const lettersContainer = document.getElementById('letters-container');
+        letters.forEach(letter => {
+            const letterCard = document.createElement('div');
+            letterCard.className = 'flashcard';
+            letterCard.innerText = letter;
+            letterCard.onclick = () => {
+                speakText(letter);
+            };
+            lettersContainer.appendChild(letterCard);
+        });
+    </script>
+</body>
+</html>

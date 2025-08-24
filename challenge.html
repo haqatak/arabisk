@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ta en Utfordring - Lær Arabisk</title>
+    <link rel="stylesheet" href="new_styles.css">
+    <style>
+        .challenge-options {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #challenge-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #choices-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .choice-card {
+            background-color: #fff;
+            border: 2px solid #4682b4;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .choice-card:hover {
+            background-color: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Test dine Kunnskaper</h1>
+    </header>
+    <nav>
+        <a href="index.html">Hjem</a>
+        <a href="letters.html">Lær Bokstaver</a>
+        <a href="words.html">Lær Ord</a>
+        <a href="challenge.html">Ta en Utfordring</a>
+        <a href="feedback.html">Gi Tilbakemelding</a>
+    </nav>
+    <main>
+        <h2>Velg en utfordring</h2>
+        <div class="challenge-options">
+            <button id="letter-challenge-btn">Bokstav-utfordring</button>
+            <button id="word-challenge-btn">Ord-utfordring</button>
+        </div>
+        <div id="challenge-container">
+            <p>Velg en utfordring for å starte!</p>
+        </div>
+        <div id="choices-container">
+            <!-- Choices will be generated here -->
+        </div>
+    </main>
+    <footer>
+    <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    </footer>
+    <script>
+        const letters = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'];
+        const words = [
+            "أَنَا", "أَنْتَ", "هُوَ", "هِيَ", "نَحْنُ", "أَنْتُم", "هُم", "هُنَّ",
+            "وَاحِد", "اثْنَان", "ثَلاثَة", "أَرْبَعَة", "خَمْسَة",
+            "يَوْم", "لَيْلَة", "صَبَاح", "مَسَاء", "شَمْس", "قَمَر",
+            "مَرْحَبًا", "كَيْف", "حَالِكَ", "شُكْرًا", "سَلام",
+            "كِتَاب", "سَيَّارَة", "طَعام", "بَاب", "طِفْل", "قِطّ", "كَلْب", "طَائِر", "سَمَكَة",
+            "شَجَرَة", "زَهْرَة", "مَطَر", "شَمْس", "قَمَر", "نَهار", "لَيْل", "بَيْت", "طَرِيق", "شَارِع", "مَدينَة",
+            "جَبَل", "نَهْر", "بَحْر", "سَمَاء", "نَجْم", "غَيْمَة", "رَياح", "صَحْرَاء", "غَابَة",
+            "عَيْن", "أُذُن", "فَم", "يَد", "رِجْل", "قَلْب", "رَأْس", "شَعْر", "وَجْه",
+            "مَدْرَسَة", "مَكْتَب", "مَطْعَم", "فِنْدَق", "مَسْجِد", "مَحَطَّة", "مَلْعَب", "مَستَشْفَى"
+        ];
+
+        let currentChallengeType = '';
+        let correctAnswer = '';
+
+        const challengeContainer = document.getElementById('challenge-container');
+        const choicesContainer = document.getElementById('choices-container');
+        const letterChallengeBtn = document.getElementById('letter-challenge-btn');
+        const wordChallengeBtn = document.getElementById('word-challenge-btn');
+
+        letterChallengeBtn.addEventListener('click', () => startChallenge('letter'));
+        wordChallengeBtn.addEventListener('click', () => startChallenge('word'));
+
+        function speakText(text) {
+            let encodedText = encodeURIComponent(text).replaceAll("%D9%80","");
+            new Audio('./'+encodedText+'.mp3').play();
+        }
+
+        function startChallenge(type) {
+            currentChallengeType = type;
+            choicesContainer.innerHTML = '';
+
+            const items = (type === 'letter') ? letters : words;
+            const chosenItems = [];
+            while(chosenItems.length < 4 && items.length > 0) {
+                const randomIndex = Math.floor(Math.random() * items.length);
+                if(!chosenItems.includes(items[randomIndex])) {
+                    chosenItems.push(items[randomIndex]);
+                }
+            }
+
+            correctAnswer = chosenItems[Math.floor(Math.random() * chosenItems.length)];
+
+            challengeContainer.innerHTML = `<p>Klikk på riktig kort for:</p>`;
+            setTimeout(() => speakText(correctAnswer), 500);
+
+
+            chosenItems.forEach(item => {
+                const choiceCard = document.createElement('div');
+                choiceCard.className = 'choice-card';
+                choiceCard.innerText = item;
+                choiceCard.addEventListener('click', () => checkAnswer(item));
+                choicesContainer.appendChild(choiceCard);
+            });
+        }
+
+        function checkAnswer(selectedItem) {
+            if (selectedItem === correctAnswer) {
+                alert('Riktig! Bra jobbet!');
+                startChallenge(currentChallengeType);
+            } else {
+                alert('Feil, prøv igjen!');
+                speakText(correctAnswer);
+            }
+        }
+    </script>
+</body>
+</html>

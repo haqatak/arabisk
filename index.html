@@ -1,149 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-	<meta charset="utf-8">
-    <title>Lær å lese arabisk med oss</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #F5F5F5;
-            padding: 20px;
-            color: #333;
-            direction: rtl;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax */
-        }
-
-        h1, h2 {
-            text-align: center;
-        }
-
-        .flashcard {
-            border: 2px solid #333;
-            padding: 20px;
-            margin: 10px;
-            font-size: 52px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #FFFFFF;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax */
-        }
-
-        .flashcard:hover {
-            background-color: #FAFAFA;
-        }
-
-        #letters, #words {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .button {
-            display: block;
-            margin: 0 auto;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            width:20%;
-          }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lær Arabisk på en Gøy Måte!</title>
+    <link rel="stylesheet" href="new_styles.css">
 </head>
 <body>
-    <h1>Lær å lese arabisk med oss</h1>
-    <h2>Koran</h2>
-    <a class="button" href="quran.html">Øve på Koran</a>
-    <h2>Dua Bok: Nivå 2</h2>
-    <a class="button" href="https://muslimskesenter.no/duabok-niva2/#:~:text=Forrige">Øve på Dua</a>
-    <h2>Utfordringer</h2>
-    <a class="button" href="flash.html">Bokstaver - Flashcards</a>
-    <br>
-    <a class="button" href="arabic.html">Test dine kunnskaper her</a>
-    <br>
-    <a class="button" href="names.html">Allah's 99 navn</a>
-
-
-    <hr>
-  
-    <h2>Bokstaver</h2>
-    <div id="letters">
-        <!-- Bokstaver vil bli generert her -->
-    </div>
-    <hr>
-    <h2>Enkle ord</h2>
-    <div id="words">
-        <!-- Ord vil bli generert her -->
-    </div>
-    <hr>
- 
+    <header>
+        <h1>Velkommen til Arabisk for Barn!</h1>
+    </header>
+    <nav>
+        <a href="index.html">Hjem</a>
+        <a href="letters.html">Lær Bokstaver</a>
+        <a href="words.html">Lær Ord</a>
+        <a href="challenge.html">Ta en Utfordring</a>
+        <a href="feedback.html">Gi Tilbakemelding</a>
+    </nav>
+    <main>
+        <h2>Hei! Velkommen til vår side for å lære arabisk!</h2>
+        <p>Her kan du lære arabiske bokstaver og ord på en morsom og interaktiv måte. Vårt mål er å gjøre det enkelt og gøy for barn og unge å ta sine første steg i å lære det arabiske språket.</p>
         
-        <script>
+        <h3>Hvorfor lære arabisk?</h3>
+        <p>Arabisk er et vakkert og rikt språk som snakkes av millioner av mennesker over hele verden. Å lære arabisk kan åpne dører til nye kulturer, vennskap og muligheter.</p>
 
-    
-            function speakText(text) {
-                let encodedText = encodeURIComponent(text).replaceAll("%D9%80","");
-                console.log(encodedText);
-                new Audio('./'+encodedText+'.mp3').play();
-            }
+        <h3>Hvordan fungerer det?</h3>
+        <p>Vi har delt opp læringen i enkle deler:</p>
+        <ul>
+            <li><strong>Lær Bokstaver:</strong> Bli kjent med det arabiske alfabetet gjennom interaktive flashcards.</li>
+            <li><strong>Lær Ord:</strong> Utvid ordforrådet ditt med vanlige og nyttige arabiske ord.</li>
+            <li><strong>Ta en Utfordring:</strong> Test kunnskapene dine med morsomme og engasjerende quizer.</li>
+        </ul>
 
-
-            const letters =['ا', 'ـا', 'ب', 'ـب', 'ـبـ', 'بـ', 'ت', 'ـت', 'ـتـ', 'تـ', 'ث', 'ـث', 'ـثـ', 'ثـ', 'ج', 'ـج', 'ـجـ', 'جـ', 'ح', 'ـح', 'ـحـ', 'حـ', 'خ', 'ـخ', 'ـخـ', 'خـ', 'د', 'ـد', 'ذ', 'ـذ', 'ر', 'ـر',  'ز', 'ـز', 'س', 'ـس', 'ـسـ', 'سـ', 'ش', 'ـش', 'ـشـ', 'شـ', 'ص', 'ـص', 'ـصـ', 'صـ', 'ض', 'ـض', 'ـضـ', 'ضـ', 'ط', 'ـط', 'ـطـ', 'طـ', 'ظ', 'ـظ', 'ـظـ', 'ظـ', 'ع', 'ـع', 'ـعـ', 'عـ', 'غ', 'ـغ', 'ـغـ', 'غـ', 'ف', 'ـف', 'ـفـ', 'فـ', 'ق', 'ـق', 'ـقـ', 'قـ', 'ك', 'ـك', 'ـكـ', 'كـ', 'ل', 'ـل', 'ـلـ', 'لـ', 'م', 'ـم', 'ـمـ', 'مـ', 'ن', 'ـن', 'ـنـ', 'نـ', 'ه', 'ـه', 'ـهـ', 'هـ', 'و', 'ـو', 'ي', 'ـي', 'ـيـ', 'يـ'];
-
-        let words = [
-        "أَنَا", "أَنْتَ", "هُوَ", "هِيَ", "نَحْنُ", "أَنْتُم", "هُم", "هُنَّ", 
-        "وَاحِد", "اثْنَان", "ثَلاثَة", "أَرْبَعَة", "خَمْسَة", 
-        "يَوْم", "لَيْلَة", "صَبَاح", "مَسَاء", "شَمْس", "قَمَر", 
-        "مَرْحَبًا", "كَيْف", "حَالِكَ", "شُكْرًا", "سَلام",
-        "كِتَاب", "سَيَّارَة", "طَعام", "بَاب", "طِفْل", "قِطّ", "كَلْب", "طَائِر", "سَمَكَة", 
-        "شَجَرَة", "زَهْرَة", "مَطَر", "شَمْس", "قَمَر", "نَهار", "لَيْل", "بَيْت", "طَرِيق", "شَارِع", "مَدينَة",
-        "جَبَل", "نَهْر", "بَحْر", "سَمَاء", "نَجْم", "غَيْمَة", "رَياح", "صَحْرَاء", "غَابَة", 
-        "عَيْن", "أُذُن", "فَم", "يَد", "رِجْل", "قَلْب", "رَأْس", "شَعْر", "وَجْه", 
-        "مَدْرَسَة", "مَكْتَب", "مَطْعَم", "فِنْدَق", "مَسْجِد", "مَحَطَّة", "مَلْعَب", "مَستَشْفَى"
-    ];
-    const lettersContainer = document.getElementById('letters');
-    letters.forEach(letter => {
-        const letterCard = document.createElement('div');
-        letterCard.className = 'flashcard';
-        letterCard.style.backgroundColor = getRandomLightColor();
-        letterCard.innerText = letter;
-        letterCard.onclick = () => { 
-            //const phonetic = phoneticLetters[letter];
-            const phonetic = letter;
-            speakText(phonetic);
-        };
-        lettersContainer.appendChild(letterCard);
-    });
-
-    const wordsContainer = document.getElementById('words');
-    words.forEach(word => {
-        const wordCard = document.createElement('div');
-        wordCard.className = 'flashcard';
-        wordCard.style.backgroundColor = getRandomLightColor();
-        wordCard.innerText = word;
-        wordCard.onclick = () => { 
-            speakText(word);
-        };
-        wordsContainer.appendChild(wordCard);
-    });
-
-
-    function getRandomLightColor() {
-        const letters = '98DAC';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 5)];
-        }
-        return color;
-    }
-</script>
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="letters.html" class="button">Start med Bokstaver</a>
+            <a href="words.html" class="button">Start med Ord</a>
+        </div>
+    </main>
+    <footer>
+    <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Arabisk for Barn</a> | Drevet av Prosjekt.pro</p>
+    </footer>
 </body>
 </html>
