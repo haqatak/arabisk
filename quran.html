@@ -106,11 +106,23 @@ let surahs = {};
 let surahDetails = {};
 
 async function fetchQuranData() {
+    const cacheKey = 'quranData';
+    const cachedData = localStorage.getItem(cacheKey);
+
+    if (cachedData) {
+        const data = JSON.parse(cachedData);
+        surahs = data.surahs;
+        surahDetails = data.surahDetails;
+        populateCheckboxes();
+        displaySurah(1);
+        return;
+    }
+
     try {
         const [arabicRes, transliterationRes, translationRes] = await Promise.all([
-            fetch('http://api.alquran.cloud/v1/quran/quran-uthmani'),
-            fetch('http://api.alquran.cloud/v1/quran/en.transliteration'),
-            fetch('http://api.alquran.cloud/v1/quran/no.berg')
+            fetch('https://api.alquran.cloud/v1/quran/quran-uthmani'),
+            fetch('https://api.alquran.cloud/v1/quran/en.transliteration'),
+            fetch('https://api.alquran.cloud/v1/quran/no.berg')
         ]);
 
         const arabicData = await arabicRes.json();
@@ -118,9 +130,12 @@ async function fetchQuranData() {
         const translationData = await translationRes.json();
 
         // Process the data
+        const tempSurahs = {};
+        const tempSurahDetails = {};
+
         arabicData.data.surahs.forEach(surah => {
-            surahs[surah.number] = { name: surah.englishName };
-            surahDetails[surah.number] = {
+            tempSurahs[surah.number] = { name: surah.englishName };
+            tempSurahDetails[surah.number] = {
                 name: surah.englishName,
                 arabic: surah.name,
                 verses: surah.ayahs.map((ayah, index) => ({
@@ -133,15 +148,22 @@ async function fetchQuranData() {
 
         transliterationData.data.surahs.forEach(surah => {
             surah.ayahs.forEach((ayah, index) => {
-                surahDetails[surah.number].verses[index].transliteration = ayah.text;
+                tempSurahDetails[surah.number].verses[index].transliteration = ayah.text;
             });
         });
 
         translationData.data.surahs.forEach(surah => {
             surah.ayahs.forEach((ayah, index) => {
-                surahDetails[surah.number].verses[index].translation = ayah.text;
+                tempSurahDetails[surah.number].verses[index].translation = ayah.text;
             });
         });
+
+        surahs = tempSurahs;
+        surahDetails = tempSurahDetails;
+
+        // Cache the data
+        const dataToCache = { surahs, surahDetails };
+        localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
 
         populateCheckboxes();
         displaySurah(1); // Display the first surah by default
