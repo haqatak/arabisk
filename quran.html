@@ -67,6 +67,7 @@
                 <div class="modal-content">
                     <span class="close-button">&times;</span>
                     <h3>Velg suraher</h3>
+                    <input type="text" id="sura-search-input" onkeyup="filterSurahs()" placeholder="Søk etter surah..." style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;">
                     <div id="surah-checkboxes">
                         <!-- Checkboxes will be generated here -->
                     </div>
@@ -203,6 +204,9 @@ async function fetchQuranData() {
 function populateCheckboxes() {
     for (const surahNumber in surahs) {
         const surah = surahs[surahNumber];
+        const entryDiv = document.createElement('div');
+        entryDiv.className = 'surah-entry';
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `surah-${surahNumber}`;
@@ -212,10 +216,26 @@ function populateCheckboxes() {
         label.htmlFor = `surah-${surahNumber}`;
         label.appendChild(document.createTextNode(`${surahNumber} - ${surah.name}`));
 
-        surahCheckboxesContainer.appendChild(checkbox);
-        surahCheckboxesContainer.appendChild(label);
-        surahCheckboxesContainer.appendChild(document.createElement('br'));
+        entryDiv.appendChild(checkbox);
+        entryDiv.appendChild(label);
+        surahCheckboxesContainer.appendChild(entryDiv);
     }
+}
+
+function filterSurahs() {
+    const input = document.getElementById('sura-search-input');
+    const filter = input.value.toLowerCase();
+    const surahEntries = document.querySelectorAll('.surah-entry');
+
+    surahEntries.forEach(entry => {
+        const label = entry.querySelector('label');
+        const txtValue = label.textContent || label.innerText;
+        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+            entry.style.display = "";
+        } else {
+            entry.style.display = "none";
+        }
+    });
 }
 
 let currentlyPlaying = [];
