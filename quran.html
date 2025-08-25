@@ -107,6 +107,7 @@
     <footer>
     <p>&copy; 2024 <a href="https://arabisk.prosjekt.pro">Lær Arabisk og Koran</a> | Drevet av Prosjekt.pro</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
     <script>
 const audioPlayer = document.getElementById("audioPlayer");
 const playbackRateSelect = document.getElementById("playbackRate");
@@ -129,6 +130,7 @@ window.onclick = (event) => {
 
 let surahs = {};
 let surahDetails = {};
+let fuse;
 
 async function fetchQuranData() {
     const cacheKey = 'quranData';
@@ -138,6 +140,14 @@ async function fetchQuranData() {
         const data = JSON.parse(cachedData);
         surahs = data.surahs;
         surahDetails = data.surahDetails;
+
+        const surahList = Object.keys(surahs).map(key => ({
+            number: key,
+            name: surahs[key].name
+        }));
+        const fuseOptions = { keys: ['name', 'number'], includeScore: true, threshold: 0.4 };
+        fuse = new Fuse(surahList, fuseOptions);
+
         populateCheckboxes();
         displaySurah(1);
         return;
@@ -190,6 +200,13 @@ async function fetchQuranData() {
         const dataToCache = { surahs, surahDetails };
         localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
 
+        const surahList = Object.keys(surahs).map(key => ({
+            number: key,
+            name: surahs[key].name
+        }));
+        const fuseOptions = { keys: ['name', 'number'], includeScore: true, threshold: 0.4 };
+        fuse = new Fuse(surahList, fuseOptions);
+
         populateCheckboxes();
         displaySurah(1); // Display the first surah by default
 
@@ -224,13 +241,21 @@ function populateCheckboxes() {
 
 function filterSurahs() {
     const input = document.getElementById('sura-search-input');
-    const filter = input.value.toLowerCase();
+    const filter = input.value;
     const surahEntries = document.querySelectorAll('.surah-entry');
 
+    if (!filter.trim()) {
+        surahEntries.forEach(entry => {
+            entry.style.display = "";
+        });
+        return;
+    }
+
+    const results = fuse.search(filter);
+    const visibleIds = results.map(result => `surah-${result.item.number}`);
+
     surahEntries.forEach(entry => {
-        const label = entry.querySelector('label');
-        const txtValue = label.textContent || label.innerText;
-        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+        if (visibleIds.includes(entry.querySelector('input').id)) {
             entry.style.display = "";
         } else {
             entry.style.display = "none";
